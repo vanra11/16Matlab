@@ -1,0 +1,26 @@
+clear clc;
+A = 5; 
+Am =5;
+f = 1000;  
+fm = 100;
+cycles = 6;        
+duration = cycles * 1/f; 
+% Time vector
+fs = 10000;         
+t = 0:1/fs:duration;
+
+m = Am/A;
+
+% Generate the signal
+signal = A * (1+ m*sin(2 * pi * f * m * t)) + sin(2 * pi * f * t);
+
+m = Am/A;
+
+ym = Am * sin(2 * pi * fm * t);
+
+% Plot the signal
+subplot(3,1,1);
+plot(t,ym);
+xlabel('Time (s)');
+ylabel('Amplitude');
+title('Sinusoidal Signal');
