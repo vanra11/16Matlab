@@ -1,0 +1,13 @@
+Fs = 10000;
+f = 1000;
+Ta=1/f;
+t = 0:1/Fs:6*Ta;
+A = 5;
+y = A*sin(2*pi*f*t)
+
+y=A*sin(2*pi*f*t)
+l1=length(y);
+y1=fft(y);
+y2=fftshift(y1);
+fx=linspace(-Fs/2, Fs/2, l1);
+plot(fx, abs(y2));
