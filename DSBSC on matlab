@@ -1,0 +1,38 @@
+% Parameters
+fc = 1000; % Carrier frequency in Hz
+fm = 50;   % Message frequency in Hz
+Am = 1;    % Message amplitude
+
+% Time vector
+t = 0:0.001:1; % Time from 0 to 1 second with 1 ms intervals
+
+% Message signal
+message_signal = Am * cos(2 * pi * fm * t);
+
+% Carrier signal
+carrier_signal = cos(2 * pi * fc * t);
+
+% DSB-SC modulation
+dsb_sc_modulated = message_signal .* carrier_signal;
+
+% Plot the signals
+subplot(3,1,1);
+plot(t, message_signal);
+title('Message Signal');
+xlabel('Time (s)');
+ylabel('Amplitude');
+
+subplot(3,1,2);
+plot(t, carrier_signal);
+title('Carrier Signal');
+xlabel('Time (s)');
+ylabel('Amplitude');
+
+subplot(3,1,3);
+plot(t, dsb_sc_modulated);
+title('DSB-SC Modulated Signal');
+xlabel('Time (s)');
+ylabel('Amplitude');
+
+% Display the plots
+sgtitle('DSB-SC Modulation Example');
