@@ -1,0 +1,16 @@
+% Define parameters
+M = 4;             % Modulation order (number of symbols)
+data = [0 1 2 3];  % Digital symbols to be modulated
+
+% Generate random data for modulation (for example)
+numSymbols = 1000;
+dataIndices = randi([1 M], 1, numSymbols);
+
+% Perform PAM modulation
+modulatedSignal = pammod(dataIndices -1, M);  % The '-1' is to adjust indices to start from 0
+
+% Display modulated signal
+stem(modulatedSignal);
+xlabel('Sample Index');
+ylabel('Amplitude');
+title('PAM Modulated Signal');
