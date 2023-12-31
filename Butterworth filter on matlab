@@ -1,0 +1,89 @@
+clear;close;clc;
+
+%Exp:14
+
+%Designing of a Butterworth filter with digital specification 
+%Author: Arnav Chourey 21BEC10016
+%Date: 9/5/2023
+
+%sqrt(0.5) <= |H(jOmega)| <= 1    : 0 <= Omega <= pi/2
+%             |H(jOmega)| <= 0.2  : 3pi/4 <= Omega <= pi
+
+%Parameter Specification:
+
+del1 = sqrt(0.5); % passband parameter
+del2 = 0.2; % stopband parameter
+
+fs = 1; % as T = 1;
+T = 1/fs;
+omega_1 = pi/2; % passband edge frequency (digital)
+omega_2 = 3*pi/4; % stopband edge frequency (digital)
+
+%convert digital frequency to analog frequency with impulse invariant
+%technique
+
+w1 = omega_1/T;
+w2 = omega_2/T;
+
+p1 = 1/del1^2;
+p2 = 1/del2^2;
+
+num = 1/2*log10((p2-1)/(p1-1));
+
+den= log10(w2/w1);
+
+N = ceil(num/den); % order of the filter
+
+wc= w1/((p1-1)^(1/(2*N)));
+
+[b a] = butter (N, wc, 's'); % analog filter H(s) .
+
+%Define w in log space
+w_s = logspace(-1, 1);
+
+[h_s, f_s] = freqs(b,a,w_s);
+printsys(b,a)
+
+% ---- ANALOG IIR Buttorworth Filter Plot in Semilog -
+
+mag= abs(h_s);
+phase = angle(h_s);
+phasedeg = phase*180/pi;
+
+figure,
+f_s = linspace(0, pi, length(f_s));
+plot(f_s, mag,'-r' , 'Linewidth' ,2); % plot
+grid on
+xlabel('Frequency (rad/s)')
+ylabel("Magnitude") 
+title('Butterworth Filter (Analog)')
+
+figure,
+subplot(2,1,1)
+loglog(w_s, mag)
+grid on
+xlabel('Frequency (rad/s)')
+ylabel('Magnitude')
+
+subplot(2,1,2)
+semilogx(w_s,phasedeg)
+grid on
+xlabel('Frequency (rad/s)')
+ylabel('Phase (degrees)')
+
+% ANALOG to DEGITAL IIR Filter Approximation.
+%Impulse Invariance Method 
+
+[b1,al]= impinvar(b,a, fs); % impulse Invariant Method
+
+w = 0:0.1:pi; % As digital frequency is restricted between 0 to pi
+[h,f] = freqz (b1,al,w); % frequency response
+gain= (abs(h)); % magnitude response
+figure,
+plot(f,gain, '-r', 'Linewidth', 2); % plot
+hold on
+plot (w1,del1,'--bo', w2, del2,'--go')
+title('Butterworth Filter (Digital): Ipulse Invariance');
+xlabel('Frequency'); 
+ylabel('Gain')
+gridon
