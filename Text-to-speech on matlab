@@ -1,0 +1,12 @@
+UserPrompt='Trial';
+TitleBar='Text to Speech';
+String='Trial of text to speech';
+UserInput=inputdlg(UserPrompt, TitleBar, 1, {String});
+if isempty(UserInput)
+    return;
+end
+UserInput=char(UserInput);
+NET.addAssembly('System.Speech');
+obj=System.Speech.Synthesis.SpeechSynthesizer;
+obj.Volume=100;
+Speak(obj, UserInput);
